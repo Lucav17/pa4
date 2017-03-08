@@ -25,6 +25,8 @@ namespace WebRole1
     public class Search : System.Web.Services.WebService
     {
 
+        private static Dictionary<string, List<string>> cache = new Dictionary<string, List<string>>();
+
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string searchPlayerData(string input)
@@ -40,6 +42,10 @@ namespace WebRole1
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public string searchTable(string input)
         {
+            if(cache.ContainsKey(input))
+            {
+                return new JavaScriptSerializer().Serialize(cache[input]);
+            }
             Dictionary<string, int> urls = new Dictionary<string, int>();
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
             ConfigurationManager.AppSettings["StorageConnectionString"]);
@@ -90,6 +96,7 @@ namespace WebRole1
                 }
                
             }
+            cache.Add(input, d.Keys.ToList<string>());
             
             return new JavaScriptSerializer().Serialize(d);
 

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AzureCloudService5" generation="1" functional="0" release="0" Id="fa6bc99e-c9a6-4011-acbb-39eeb2736a0f" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AzureCloudService5" generation="1" functional="0" release="0" Id="c6f007a4-219e-4ec2-8b97-0ae94c753f2a" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="AzureCloudService5Group" generation="1" functional="0" release="0">
       <componentports>
@@ -132,9 +132,9 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="3a712a63-9603-46c1-b345-6660ce41bed7" ref="Microsoft.RedDog.Contract\ServiceContract\AzureCloudService5Contract@ServiceDefinition">
+    <implementation Id="9d0b96bd-dfc1-4c57-b67b-dc1b4a4a5a85" ref="Microsoft.RedDog.Contract\ServiceContract\AzureCloudService5Contract@ServiceDefinition">
       <interfacereferences>
-        <interfaceReference Id="4541517a-b91f-42e2-b19b-e112045cf954" ref="Microsoft.RedDog.Contract\Interface\WebRole1:Endpoint1@ServiceDefinition">
+        <interfaceReference Id="f9cc2665-6903-46dd-94c9-3d9a2b3f61b5" ref="Microsoft.RedDog.Contract\Interface\WebRole1:Endpoint1@ServiceDefinition">
           <inPort>
             <inPortMoniker name="/AzureCloudService5/AzureCloudService5Group/WebRole1:Endpoint1" />
           </inPort>

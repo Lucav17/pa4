@@ -96,8 +96,12 @@
                             <p style="text-align:center">Total URL's in Queue: <span id="totalUrls"></span></p>
                             <p style="text-align:center">Total URL's in Table: <span id="totalTable"></span></p>
                             <p style="text-align:center">Current Status: <span id="status"></span></p>
+                            <p style="text-align:center">Most Recent Title: <span id="rcnt"></span></p>
                             <p style="text-align:center">Last 10 URL's Crawled:</p>
                             <ul style="text-align:center" id="top"></ul>
+                            <p style="text-align:center">All Titles</p>
+                            
+                            <ul style="text-align:center" id="mr"></ul>
                         </div>
                     </div>
                 </div>
@@ -249,7 +253,9 @@
                         }
                         
                     });
+                    $('#mr').append(stringtoAppend);
                     $('#searchList').html(stringtoAppend);
+                    $('#rcent').html($('#searchList').last().text);
                 },
                 error: function (msg) {
                     console.log(msg);

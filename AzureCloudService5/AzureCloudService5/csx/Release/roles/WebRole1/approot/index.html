@@ -1,0 +1,456 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+</head>
+
+
+<body style="padding:40px 10vw;">
+    <style>
+        #chitikaAdBlock-0 {
+            margin-top:50px;
+            margin-left:15% !important;
+        }
+    </style>
+    <div>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Query</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Dashboard</a></li>
+ 
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                <div class="container" style="max-width:100%">
+                    <div class="row">
+                        <div class="col-md-2 col-xs-2">
+                            <script type="text/javascript">
+  ( function() {
+    if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+    var unit = {"calltype":"async[2]","publisher":"lucav171995","width":160,"height":600,"sid":"Chitika Default"};
+    var placement_id = window.CHITIKA.units.length;
+    window.CHITIKA.units.push(unit);
+    document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+}());
+                            </script>
+                            <script type="text/javascript" src="//cdn.chitika.net/getads.js" async></script>
+                        </div>
+                        <div class="col-md-9 col-md-offset-1 col-xs-9 col-xs-offset-1">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="input-group" style="margin-top:50px">
+                                        <input type="search" class="form-control" id="searchInput" list="data" autocomplete="off">
+                                        <datalist id="data"></datalist>
+                                        <span class="input-group-btn">
+                                            <button id="sbSearch" class="btn btn-default hover-button" type="button">Search</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <section id="highlight">
+
+                            </section>
+                            <section id="searchResults">
+                                <ul id="searchList" style="padding:0;margin-top:30px;">
+
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="profile">
+                <h2 style="text-align:center;margin-top:75px;">Dashboard will refresh and update on it's own.</h2>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2" style="margin-top:20vh;text-align:center;margin-bottom:50px;">
+
+                            <div class="col-md-6">
+                                <p>CPU: <span id="cpu"></span>%</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p>RAM: <span id="ram"></span></p>
+                            </div>
+                            <p>Latest error: <br /><span id="error"></span></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3" style="text-align:center;margin-bottom:50px;">
+                            <button type="button" class="btn btn-primary" id="1">Start</button>
+                            <button type="button" class="btn btn-primary" id="2">Stop</button>
+                            <button type="button" class="btn btn-primary" id="3">Reset</button>
+                            <button type="button" class="btn btn-primary four" id="4">Dashboard</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <p style="text-align:center">Total URL's in Queue: <span id="totalUrls"></span></p>
+                            <p style="text-align:center">Total URL's in Table: <span id="totalTable"></span></p>
+                            <p style="text-align:center">Current Status: <span id="status"></span></p>
+                            <p style="text-align:center">Last 10 URL's Crawled:</p>
+                            <ul style="text-align:center" id="top"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script>
+
+        
+        $('document').ready(function () {
+            $.ajax({
+                type: "POST",
+                url: "Query.asmx/downloadWiki",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    console.log("success");
+                },
+                error: function (msg) {
+                    console.log("failure");
+                }
+
+            });
+        });
+
+
+        $("#searchInput").keyup(function (event) {
+            var search = $("#searchInput").val().toLowerCase().trim();
+            var obj = { input: search };
+            console.log(search);
+            $.ajax({
+                type: "POST",
+                url: "Query.asmx/searchTrie",
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var arr = msg.d;
+                    arr = arr.replace("[", "");
+                    arr = arr.replace("]", "");
+                    arr = arr.replace(/"/g, "");
+                    arr = arr.replace(/\$/g, "");
+                    arr = arr.replace(/\^/g, "");
+                    var data = arr.split(",");
+                    var addHTML = "";
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i]) {
+                                addHTML += "<option value='" + data[i] + "'>" + data[i] + "</option>";
+                            }
+                        }
+                        $("#data").html(addHTML);
+                    } else {
+                        $("#search-result").html("<p>No results found</p>");
+                    }
+                },
+                error: function (msg) {
+                    console.log(msg);
+                    console.log("fail");
+                    console.log(search);
+                }
+
+            });
+        });
+
+        
+        
+        $("#sbSearch").click(function (event) {
+            var search = $("#searchInput").val().toLowerCase().trim();
+            var obj = { input: search };
+            console.log(search);
+            $.ajax({
+                type: "POST",
+                url: "Search.asmx/searchPlayerData",
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    $("#highlight").html("");
+                    if (msg.d.length > 0) {
+
+                        var jsonObj = JSON.parse(msg.d);
+                        console.log(jsonObj);
+                        var htmlString = "<h2>" + jsonObj['name'] + "</h2>" + "<div class='row'><div class='col-sm-2 col-xs-4 col-sm-offset-1 col-xs-offset-0'>"
+                            + "<p>Team: " + jsonObj['team'] + "</p><p>GP: " + jsonObj['gp'] + "</p><p>Ast: " + jsonObj['ast'] +
+                            "</p></div><div class='col-sm-2 col-xs-4'><p>PPG: " + jsonObj['ppg'] + "</p><p>Min: " + jsonObj['min'] +
+                            "</p><p>Blk: " + jsonObj['blk'] + "</p></div><div class='col-sm-2 col-xs-4'><p>FGA: " + jsonObj['fga'] +
+                            "</p><p>FTA: " + jsonObj['fta'] + "</p><p>RDEF: " + jsonObj['rdef'] + "</p></div></div>";
+                        $("#highlight").html(htmlString);
+                    }
+
+
+                },
+                error: function (msg) {
+                    console.log(msg);
+                    console.log("failure");
+                }
+
+            });
+        });
+
+
+        $("#sbSearch").click(function (event) {
+            console.log("clicked");
+            var search = $("#searchInput").val().toLowerCase().trim();
+            var obj = { input: search };
+            console.log(search);
+            $.ajax({
+                type: "POST",
+                url: "Search.asmx/searchTable",
+                data: JSON.stringify(obj),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    console.log(msg);
+                    console.log("this is it");
+                    var stringtoAppend = "";
+                    var arr = msg.d;
+                    var json = JSON.parse(arr);
+                    console.log(json);
+                    arr = arr.replace("{", "");
+                    arr = arr.replace("}", "");
+                    arr = arr.replace(/"/g, "");
+                    arr = arr.replace(/\$/g, "");
+                    arr = arr.replace(/\^/g, "");
+                    arr = arr.replace(/\\u0027/g, "'");
+
+                    var splitData = arr.split(',');
+                    console.log(splitData);
+      
+                    splitData.forEach(function (e) {
+                        var data = e.split(':');
+                        if(data[2] != undefined) {
+                            stringtoAppend += "<li><a href='http:" + data[1] + "' target='_BLANK'>";
+                            for (var i = 2; i < data.length; i++) {
+                                stringtoAppend += data[i];
+                            }
+                            stringtoAppend += "</a></li>";
+                        }
+                        
+                    });
+                    $('#searchList').html(stringtoAppend);
+                },
+                error: function (msg) {
+                    console.log(msg);
+                    console.log("failure");
+                }
+
+            });
+        });
+
+        setInterval(function () {
+            $("#4").trigger("click");
+        }, 9000);
+
+        $("#1").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/GetRobotInfo",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    console.log("success");
+                },
+                error: function (msg) {
+                    console.log("failure");
+                }
+            });
+        });
+
+
+        $("#2").click(function () {
+
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/pause",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    console.log("success");
+                },
+                error: function (msg) {
+                    console.log("failure");
+                }
+            });
+
+        });
+
+
+        $("#3").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/ClearQueue",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    console.log("success");
+                },
+                error: function (msg) {
+                    console.log("failure");
+                }
+            });
+        });
+
+
+        $("#4").click(function () {
+
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/getCPU",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    console.log("success");
+                    var arr = msg.d;
+                    arr = arr.replace("[", "");
+                    arr = arr.replace("]", "");
+                    arr = arr.replace(/"/g, "");
+                    $("#cpu").text(arr);
+                    console.log(arr);
+
+                },
+                error: function (msg) {
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/getError",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var arr = msg.d;
+                    arr = arr.replace("[", "");
+                    arr = arr.replace("]", "");
+                    arr = arr.replace(/"/g, "");
+                    $("#error").text(arr);
+
+                },
+                error: function (msg) {
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/getRAM",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var arr = msg.d;
+                    arr = arr.replace("[", "");
+                    arr = arr.replace("]", "");
+                    arr = arr.replace(/"/g, "");
+                    $("#ram").text(arr);
+
+                },
+                error: function (msg) {
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/retrieveNumbers",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var arr = msg.d;
+                    arr = arr.replace("[", "");
+                    arr = arr.replace("]", "");
+                    arr = arr.replace(/"/g, "");
+
+                    var data = arr.split(',');
+                    var total = parseInt(data[0]) + parseInt(data[1]);
+                    $("#totalUrls").text(total);
+                },
+                error: function (msg) {
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/retrieveStatus",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var arr = msg.d;
+                    arr = arr.replace("[", "");
+                    arr = arr.replace("]", "");
+                    arr = arr.replace(/"/g, "");
+
+                    $("#status").text(arr);
+                },
+                error: function (msg) {
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/top10",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var arr = msg.d;
+                    arr = arr.replace("[", "");
+                    arr = arr.replace("]", "");
+                    arr = arr.replace(/"/g, "");
+                    var data = arr.split(',');
+                    var s = "";
+                    data.forEach(function (e) {
+                        s += "<a href='" + e + "' target='_BLANK'><li>" + e + "</li></a>";
+                    });
+                    $("#top").html(s);
+
+                },
+                error: function (msg) {
+                    console.log("failure");
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "Admin.asmx/getTotal",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    console.log("success");
+                    var arr = msg.d;
+                    arr = arr.replace("[", "");
+                    arr = arr.replace("]", "");
+                    arr = arr.replace(/"/g, "");
+                    $("#totalTable").text(arr);
+                },
+                error: function (msg) {
+                    console.log("failure");
+                }
+            });
+        });
+    </script>
+
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+﻿body {
+}
+
+
+li {
+    list-style-type:none;
+    margin-bottom: 15px;
+    
+}
+
+
+.four {
+    display:none !important;
+}
+
+#searchList li {
+    font-size:1.5em;
+    font-weight:bold;
+}
